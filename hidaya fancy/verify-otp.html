@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Verify OTP - Hidaya Fancy</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    background: #fff7e6;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
+  .container {
+    background: white;
+    padding: 30px 35px;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    width: 320px;
+    text-align: center;
+  }
+  input {
+    width: 100%;
+    padding: 12px;
+    margin: 15px 0;
+    border-radius: 6px;
+    border: 1.5px solid #ccc;
+    font-size: 1em;
+    letter-spacing: 4px;
+    text-align: center;
+  }
+  button {
+    width: 100%;
+    background-color: #f8b400;
+    border: none;
+    padding: 12px;
+    font-weight: 700;
+    font-size: 1.1em;
+    border-radius: 8px;
+    cursor: pointer;
+  }
+  button:hover {
+    background-color: #ffca28;
+  }
+  p.message {
+    margin-top: 10px;
+    color: red;
+    font-weight: 600;
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <h2>Enter OTP</h2>
+  <input type="text" id="otpInput" maxlength="6" placeholder="6-digit OTP" autofocus />
+  <button onclick="verifyOTP()">Verify OTP</button>
+  <p class="message" id="msg"></p>
+</div>
+
+<script>
+  function verifyOTP() {
+    const otpEntered = document.getElementById('otpInput').value.trim();
+    const msg = document.getElementById('msg');
+    const savedOTP = localStorage.getItem('resetOTP');
+
+    if(otpEntered.length !== 6 || isNaN(otpEntered)) {
+      msg.textContent = 'Please enter a valid 6-digit OTP.';
+      return;
+    }
+
+    if(otpEntered === savedOTP) {
+      // OTP correct - proceed to reset password
+      msg.textContent = '';
+      localStorage.removeItem('resetOTP'); // optional: remove OTP after success
+      window.location.href = 'reset-password.html';
+    } else {
+      msg.textContent = 'Incorrect OTP. Please try again.';
+    }
+  }
+</script>
+
+</body>
+</html>

@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>All Products - Hidaya Fancy</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    background: #fff7e6;
+    margin: 0;
+    padding: 20px;
+    color: #333;
+  }
+  h1 {
+    text-align: center;
+    color: #f8b400;
+  }
+  .search-bar {
+    max-width: 800px;
+    margin: 0 auto 20px;
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  input, select {
+    padding: 10px;
+    font-size: 1em;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    width: 200px;
+  }
+  .product-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 20px;
+    max-width: 1200px;
+    margin: auto;
+  }
+  .product-card {
+    background: white;
+    border-radius: 10px;
+    padding: 15px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    text-align: center;
+  }
+  .product-card h3 {
+    margin: 10px 0 5px;
+    color: #f8b400;
+  }
+  .product-card p {
+    margin: 5px 0;
+  }
+  .product-card a {
+    display: inline-block;
+    margin-top: 10px;
+    padding: 10px 15px;
+    background: #f8b400;
+    color: black;
+    text-decoration: none;
+    border-radius: 6px;
+    font-weight: bold;
+  }
+  .product-card a:hover {
+    background: #ffca28;
+  }
+  .fav-btn {
+    background: none;
+    border: none;
+    font-size: 1.2em;
+    color: red;
+    cursor: pointer;
+    float: right;
+  }
+</style>
+</head>
+<body>
+
+<h1>Hidaya Fancy Products</h1>
+
+<div class="search-bar">
+  <input type="text" id="searchInput" placeholder="Search by name...">
+  <select id="brandFilter">
+    <option value="">All Brands</option>
+    <option>LAKME</option>
+    <option>FAIR LOVELY</option>
+    <option>BB</option>
+    <option>WHITE TONE</option>
+    <option>OLYA</option>
+    <option>PONDS</option>
+    <option>JAVEES HERBAL</option>
+    <option>NATURES</option>
+    <option>MAMAEARTH</option>
+    <option>HIMALAYA</option>
+    <option>IM MILAP</option>
+    <option>FERM</option>
+  </select>
+</div>
+
+<div class="product-list" id="productList">
+  <!-- Product cards will be inserted here -->
+</div>
+
+<script>
+const products = [
+  { brand: 'LAKME', name: 'Sunscreen', price: 125, quantity: 2 },
+  { brand: 'LAKME', name: 'Sunscreen Gel', price: 110, quantity: 1 },
+  { brand: 'FAIR LOVELY', name: 'Ayurveda Fair Lovely', price: 88, quantity: 2 },
+  { brand: 'FAIR LOVELY', name: 'Serum in Cream Vita B,C,E', price: 68, quantity: 5 },
+  { brand: 'BB', name: 'BB Cream', price: 99, quantity: 4 },
+  { brand: 'BB', name: 'Bright Beauty Serum Cream', price: 90, quantity: 2 },
+  { brand: 'WHITE TONE', name: 'Soft and Smooth', price: 48, quantity: 2 },
+  { brand: 'OLYA', name: 'Natural Aura', price: 99, quantity: 2 },
+  { brand: 'PONDS', name: 'Sun Miracle SPF50PA+++', price: 0, quantity: 1 },
+  { brand: 'PONDS', name: 'Face Wash', price: 115, quantity: 2 },
+  { brand: 'JAVEES HERBAL', name: 'Multani Mitti Face Wash', price: 125, quantity: 2 },
+  { brand: 'NATURES', name: 'Neem Face Wash 50ml', price: 89, quantity: 2 },
+  { brand: 'MAMAEARTH', name: 'Oil Clear Lemon Face Wash 50ml', price: 90, quantity: 2 },
+  { brand: 'HIMALAYA', name: 'Pollution Detox Charcoal Face Wash 50ml', price: 110, quantity: 2 },
+  { brand: 'IM MILAP', name: 'Long Wear Eyeliner', price: 65, quantity: 2 },
+  { brand: 'FERM', name: 'Cream Bleach Turmeric and Milk', price: 32, quantity: 2 }
+];
+
+function renderProducts(filter = '') {
+  const list = document.getElementById('productList');
+  const brandFilter = document.getElementById('brandFilter').value;
+  list.innerHTML = '';
+  const filtered = products.filter(p => 
+    p.name.toLowerCase().includes(filter.toLowerCase()) &&
+    (!brandFilter || p.brand === brandFilter)
+  );
+  filtered.forEach(prod => {
+    const card = document.createElement('div');
+    card.className = 'product-card';
+    card.innerHTML = `
+      <button class="fav-btn" onclick="addToFavorites('${prod.brand}', '${prod.name}', ${prod.quantity})">❤</button>
+      <h3>${prod.name}</h3>
+      <p><strong>Brand:</strong> ${prod.brand}</p>
+      <p><strong>Price:</strong> Rs ${prod.price}</p>
+      <p><strong>Quantity:</strong> ${prod.quantity}</p>
+      <a href="order.html?brand=${encodeURIComponent(prod.brand)}&product=${encodeURIComponent(prod.name)}&price=${prod.price}&quantity=${prod.quantity}">Order Now</a>
+    `;
+    list.appendChild(card);
+  });
+}
+
+function addToFavorites(brand, name, quantity) {
+  let favorites = JSON.parse(localStorage.getItem('favorites')) || [];
+  favorites.push({ brand, name, quantity });
+  localStorage.setItem('favorites', JSON.stringify(favorites));
+  alert(`${name} added to favorites.`);
+}
+
+document.getElementById('searchInput').addEventListener('input', e => renderProducts(e.target.value));
+document.getElementById('brandFilter').addEventListener('change', () => renderProducts(document.getElementById('searchInput').value));
+
+renderProducts();
+const productList = JSON.parse(localStorage.getItem("products")) || [];
+
+productList.forEach(prod => {
+  const card = document.createElement("div");
+  card.innerHTML = `
+    <h3>${prod.name} (${prod.brand})</h3>
+    <p>Price: Rs ${prod.price}</p>
+    <p><strong>Available: ${prod.quantity}</strong></p>
+    <a href="order.html?brand=${prod.brand}&product=${prod.name}&price=${prod.price}&quantity=1">Order</a>
+  `;
+  document.body.appendChild(card);
+});
+
+</script>
+
+</body>
+</html>

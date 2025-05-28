@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Register - Hidaya Fancy</title>
+</head>
+<body>
+  <h2>Register</h2>
+  <input type="text" id="registerName" placeholder="Full Name" />
+  <input type="email" id="registerEmail" placeholder="Email" />
+  <input type="password" id="registerPassword" placeholder="Password" />
+  <button onclick="register()">Register</button>
+
+  <script>
+    function getUsers() {
+      const usersJson = localStorage.getItem('users');
+      return usersJson ? JSON.parse(usersJson) : [];
+    }
+    
+    function saveUsers(users) {
+      localStorage.setItem('users', JSON.stringify(users));
+    }
+
+    function register() {
+      const name = document.getElementById('registerName').value.trim();
+      const email = document.getElementById('registerEmail').value.trim();
+      const password = document.getElementById('registerPassword').value.trim();
+
+      if (!name || !email || !password) {
+        alert('Please fill all fields');
+        return;
+      }
+
+      const users = getUsers();
+
+      // Check if email already registered
+      const userExists = users.some(u => u.email.toLowerCase() === email.toLowerCase());
+      if (userExists) {
+        alert('Email already registered');
+        return;
+      }
+
+      // Add new user with signInDate
+      users.push({
+        name,
+        email,
+        password,
+        signInDate: new Date().toISOString()
+      });
+
+      saveUsers(users);
+
+      alert('Registration successful! Redirecting to home page...');
+      window.location.href = 'index.html'; // Redirect after success
+    }
+  </script>
+</body>
+</html>

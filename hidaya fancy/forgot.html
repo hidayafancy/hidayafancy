@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Forgot Password - Hidaya Fancy</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    background: #fff7e6;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
+  .container {
+    background: white;
+    padding: 30px 35px;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    width: 320px;
+    text-align: center;
+  }
+  input {
+    width: 100%;
+    padding: 12px;
+    margin: 15px 0;
+    border-radius: 6px;
+    border: 1.5px solid #ccc;
+    font-size: 1em;
+  }
+  button {
+    width: 100%;
+    background-color: #f8b400;
+    border: none;
+    padding: 12px;
+    font-weight: 700;
+    font-size: 1.1em;
+    border-radius: 8px;
+    cursor: pointer;
+  }
+  button:hover {
+    background-color: #ffca28;
+  }
+  p.message {
+    margin-top: 10px;
+    color: red;
+    font-weight: 600;
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <h2>Forgot Password</h2>
+  <input type="email" id="emailInput" placeholder="Enter your registered email" required />
+  <button onclick="sendOTP()">Send OTP</button>
+  <p class="message" id="msg"></p>
+</div>
+
+<script>
+  function sendOTP() {
+    const email = document.getElementById('emailInput').value.trim().toLowerCase();
+    const msg = document.getElementById('msg');
+    if(!email) {
+      msg.textContent = 'Please enter your email.';
+      return;
+    }
+
+    // Check if email exists in users list
+    const users = JSON.parse(localStorage.getItem('users') || '[]');
+    const user = users.find(u => u.email.toLowerCase() === email);
+    if (!user) {
+      msg.textContent = 'Email not registered.';
+      return;
+    }
+
+    // Generate OTP and save in localStorage
+    const otp = Math.floor(100000 + Math.random() * 900000).toString();
+    localStorage.setItem('resetOTP', otp);
+    localStorage.setItem('resetEmail', email);
+
+    alert(`Mock OTP sent to ${email}: ${otp}`);  // In real app, send email
+
+    // Redirect to OTP verification page
+    window.location.href = 'verify-otp.html';
+  }
+</script>
+
+</body>
+</html>

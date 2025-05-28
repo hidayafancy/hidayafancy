@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>LAKME - Hidaya Fancy</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    padding: 20px;
+    background-color: #fff7e6;
+  }
+  header {
+    background-color: #f8b400;
+    color: black;
+    padding: 15px;
+    font-size: 1.8em;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  .product-list {
+    max-width: 900px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fill,minmax(280px,1fr));
+    gap: 20px;
+  }
+  .product-card {
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 15px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    text-align: center;
+    cursor: pointer;
+    transition: box-shadow 0.3s;
+    text-decoration: none;
+    color: black;
+  }
+  .product-card:hover {
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+  }
+  .product-name {
+    font-weight: 600;
+    margin: 10px 0 6px;
+  }
+  .product-price {
+    color: #f8b400;
+    font-weight: bold;
+    margin-bottom: 8px;
+  }
+  .quantity {
+    font-size: 0.9em;
+    color: #666;
+  }
+  .back-link {
+    display: block;
+    max-width: 900px;
+    margin: 30px auto 10px;
+    font-weight: bold;
+    color: #f8b400;
+    text-decoration: none;
+  }
+  .back-link:hover {
+    text-decoration: underline;
+  }
+</style>
+</head>
+<body>
+
+<header>LAKME Products</header>
+
+<div class="product-list">
+
+  <a href="lakme-product.html?name=Sunscreen%20Difference&price=125&qty=2" class="product-card">
+    <div class="product-name">Sunscreen Difference</div>
+    <div class="product-price">Rs 125</div>
+    <div class="quantity">Quantity: 2</div>
+  </a>
+  
+  <a href="lakme-product.html?name=Sunscreen%20Gel&price=110&qty=1" class="product-card">
+    <div class="product-name">Sunscreen Gel</div>
+    <div class="product-price">Rs 110</div>
+    <div class="quantity">Quantity: 1</div>
+  </a>
+  
+  <a href="lakme-product.html?name=Face%20Wash&price=130&qty=1" class="product-card">
+    <div class="product-name">Face Wash</div>
+    <div class="product-price">Rs 130</div>
+    <div class="quantity">Quantity: 1</div>
+  </a>
+  
+  <a href="lakme-product.html?name=CC%20Cream&price=115&qty=2" class="product-card">
+    <div class="product-name">CC Cream</div>
+    <div class="product-price">Rs 115</div>
+    <div class="quantity">Quantity: 2</div>
+  </a>
+  
+
+</div>
+
+<a href="women.html" class="back-link">&larr; Back to Women Products</a>
+<script>
+const products = [
+  { brand: "LAKME", name: "Sunscreen", price: 125, quantity: 2 },
+  { brand: "LAKME", name: "Sunscreen Gel", price: 110, quantity: 1 },
+  // ... add all products
+];
+localStorage.setItem("products", JSON.stringify(products));
+</script>
+</body>
+</html>

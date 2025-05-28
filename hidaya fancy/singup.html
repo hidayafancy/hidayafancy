@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Sign Up - Hidaya Fancy</title>
+  <style>
+    body { background: #fff7e6; font-family: Arial; padding: 20px; max-width: 400px; margin: auto; }
+    h2 { text-align: center; color: #f8b400; }
+    input, button { width: 100%; padding: 10px; margin: 10px 0; border-radius: 6px; border: 1px solid #ccc; }
+    button { background: #f8b400; color: black; font-weight: bold; cursor: pointer; }
+    button:hover { background: #ffca28; }
+  </style>
+</head>
+<body>
+  <h2>Sign Up</h2>
+  <input type="text" id="name" placeholder="Full Name" required />
+  <input type="email" id="email" placeholder="Email" required />
+  <input type="password" id="password" placeholder="Password" required />
+  <button onclick="signUp()">Register</button>
+  <p>Already have an account? <a href="login.html">Login</a></p>
+
+  <script>
+    function signUp() {
+      const name = document.getElementById("name").value;
+      const email = document.getElementById("email").value;
+      const password = document.getElementById("password").value;
+
+      if (!name || !email || !password) {
+        alert("Please fill all fields");
+        return;
+      }
+
+      const user = { name, email, password };
+      localStorage.setItem("user_" + email, JSON.stringify(user));
+      alert("Sign-Up Successful! Please login.");
+      window.location.href = "login.html";
+    }
+  </script>
+</body>
+</html>
