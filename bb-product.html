@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Product Page - Hidaya Fancy</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    background-color: #fff7e6;
+    padding: 20px;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+  header {
+    background-color: #f8b400;
+    color: black;
+    padding: 15px;
+    font-size: 1.6em;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  .product-info {
+    background: white;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  }
+  .product-name {
+    font-weight: 700;
+    font-size: 1.5em;
+    margin-bottom: 10px;
+  }
+  .price {
+    color: #f8b400;
+    font-weight: bold;
+    margin-bottom: 10px;
+    font-size: 1.2em;
+  }
+  label {
+    font-weight: 600;
+    display: block;
+    margin-top: 15px;
+  }
+  input[type="number"] {
+    width: 60px;
+    padding: 5px;
+    font-size: 1em;
+    margin-top: 5px;
+  }
+  button {
+    margin-top: 20px;
+    padding: 10px 15px;
+    font-size: 1em;
+    background-color: #f8b400;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+    color: black;
+    margin-right: 10px;
+  }
+  button:hover {
+    background-color: #ffca28;
+  }
+  .links {
+    margin-top: 25px;
+  }
+  a {
+    color: #f8b400;
+    text-decoration: none;
+    font-weight: 600;
+  }
+  a:hover {
+    text-decoration: underline;
+  }
+</style>
+</head>
+<body>
+
+<header>BB</header>
+
+<div class="product-name" id="productName"></div>
+<div class="price" id="productPrice"></div>
+<p id="productDesc"></p>
+<input type="number" id="quantity" value="1" min="1" max="10" />
+<button id="orderBtn">Order Now</button>
+
+<script>
+  const params = new URLSearchParams(window.location.search);
+  const name = params.get('name');
+  const price = params.get('price');
+
+  document.getElementById('productName').textContent = name;
+  document.getElementById('productPrice').textContent = `Rs ${price}.00`;
+  document.getElementById('productDesc').textContent = `This is a LAKME product: ${name}. Excellent choice for your skincare.`
+
+  document.getElementById('orderBtn').addEventListener('click', () => {
+    const quantity = document.getElementById('quantity').value;
+
+    const order = {
+      brand: "BB",
+      name: name,
+      price: price,
+      quantity: quantity
+    };
+
+    localStorage.setItem("lastOrder", JSON.stringify(order));
+    window.location.href = "order.html";
+  });
+</script>
+
+
+</body>
+</html>

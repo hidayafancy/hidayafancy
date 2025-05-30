@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Hidaya Fancy - Women Products</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    margin:0; padding:20px;
+    background-color: #fff7e6;
+  }
+  header {
+    background-color: #f8b400;
+    color: black;
+    padding: 15px;
+    font-size: 1.8em;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  #search-bar {
+    max-width: 400px;
+    margin: 0 auto 20px;
+    display: flex;
+    gap: 10px;
+  }
+  #search-bar input, #search-bar select {
+    padding: 8px;
+    font-size: 1em;
+    flex: 1;
+  }
+  #brand-list {
+    max-width: 800px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fit,minmax(180px,1fr));
+    gap: 20px;
+  }
+  .brand-card {
+    background: #f8b400;
+    color: black;
+    padding: 20px;
+    border-radius: 8px;
+    text-align: center;
+    font-weight: 600;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    cursor: pointer;
+    transition: background-color 0.3s;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .brand-card:hover {
+    background-color: #ffca28;
+  }
+</style>
+</head>
+<body>
+
+<header>Hidaya Fancy - Women Products</header>
+
+<div id="search-bar">
+  <input type="text" id="brandSearch" placeholder="Search brand name..." onkeyup="filterBrands()" />
+  <select id="categoryFilter" onchange="filterBrands()">
+    <option value="">Filter by Category</option>
+    <option value="Sunscreen">Sunscreen</option>
+    <option value="Cream">Cream</option>
+    <option value="Serum">Serum</option>
+    <option value="Face Wash">Face Wash</option>
+    <option value="Makeup">Makeup</option>
+    <!-- Add more categories as needed -->
+  </select>
+</div>
+
+<div id="brand-list">
+
+  <a href="lakme.html" class="brand-card" data-category="Makeup">LAKME</a>
+  <a href="fairlovely.html" class="brand-card" data-category="Cream">FAIR LOVELY</a>
+  <a href="bb.html" class="brand-card" data-category="Cream">BB</a>
+  <a href="whitetone.html" class="brand-card" data-category="Cream">WHITE TONE</a>
+  <a href="olya.html" class="brand-card" data-category="Sunscreen">OLYA</a>
+  <a href="ponds.html" class="brand-card" data-category="Cream">PONDS</a>
+  <a href="javeesherbal.html" class="brand-card" data-category="Ayurveda">JAVEES HERBAL</a>
+  <a href="natures.html" class="brand-card" data-category="Cream">NATURES</a>
+  <a href="mamaearth.html" class="brand-card" data-category="Cream">MAMAEARTH</a>
+  <a href="himalaya.html" class="brand-card" data-category="Cream">HIMALAYA</a>
+  <a href="immilap.html" class="brand-card" data-category="Makeup">IM MILAP</a>
+  <a href="ferm.html" class="brand-card" data-category="Cream">FERM</a>
+
+</div>
+
+<script>
+  function filterBrands() {
+    const searchInput = document.getElementById('brandSearch').value.toLowerCase();
+    const categoryFilter = document.getElementById('categoryFilter').value;
+    const brands = document.querySelectorAll('#brand-list .brand-card');
+
+    brands.forEach(brand => {
+      const brandName = brand.textContent.toLowerCase();
+      const brandCategory = brand.getAttribute('data-category');
+
+      const matchesName = brandName.includes(searchInput);
+      const matchesCategory = categoryFilter === '' || brandCategory === categoryFilter;
+
+      if (matchesName && matchesCategory) {
+        brand.style.display = 'flex';
+      } else {
+        brand.style.display = 'none';
+      }
+    });
+  }
+</script>
+
+</body>
+</html>

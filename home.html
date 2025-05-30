@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Profile - Hidaya Fancy</title>
+  <style>
+    body {
+      background: #fff7e6;
+      font-family: Arial;
+      max-width: 500px;
+      margin: 30px auto;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+    h2 {
+      text-align: center;
+      color: #f8b400;
+    }
+    label {
+      display: block;
+      margin: 10px 0 5px;
+      font-weight: bold;
+    }
+    input {
+      width: 100%;
+      padding: 8px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+      box-sizing: border-box;
+    }
+    button {
+      margin-top: 20px;
+      padding: 10px;
+      width: 100%;
+      background-color: #f8b400;
+      border: none;
+      font-weight: bold;
+      cursor: pointer;
+      border-radius: 6px;
+    }
+    button:hover {
+      background-color: #ffca28;
+    }
+    #logout {
+      background-color: #d9534f;
+      color: white;
+      margin-top: 10px;
+    }
+    #logout:hover {
+      background-color: #c9302c;
+    }
+  </style>
+</head>
+<body>
+
+  <h2>My Profile</h2>
+
+  <form id="profileForm">
+    <label for="name">Full Name</label>
+    <input type="text" id="name" />
+
+    <label for="email">Email (read-only)</label>
+    <input type="email" id="email" readonly />
+
+    <label for="phone">Phone</label>
+    <input type="tel" id="phone" />
+
+    <label for="address">Address</label>
+    <input type="text" id="address" />
+
+    <button type="submit">Update Profile</button>
+  </form>
+
+  <button id="logout" onclick="logout()">Logout</button>
+
+  <script>
+    const user = JSON.parse(localStorage.getItem("loggedInUser"));
+    if (!user) {
+      window.location.href = "login.html";
+    }
+
+    // Populate form with current data
+    document.getElementById("name").value = user.name || "";
+    document.getElementById("email").value = user.email;
+    document.getElementById("phone").value = user.phone || "";
+    document.getElementById("address").value = user.address || "";
+
+    // Update profile
+    document.getElementById("profileForm").addEventListener("submit", function(e) {
+      e.preventDefault();
+      user.name = document.getElementById("name").value;
+      user.phone = document.getElementById("phone").value;
+      user.address = document.getElementById("address").value;
+
+      // Save back to localStorage
+      localStorage.setItem("user_" + user.email, JSON.stringify(user));
+      localStorage.setItem("loggedInUser", JSON.stringify(user));
+      alert("Profile updated successfully!");
+    });
+
+    function logout() {
+      localStorage.removeItem("loggedInUser");
+      window.location.href = "login.html";
+    }
+  </script>
+
+</body>
+</html>

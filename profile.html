@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>My Profile - Hidaya Fancy</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@500&display=swap');
+
+  body {
+    font-family: 'Montserrat', sans-serif;
+    background: #fff7e6;
+    max-width: 600px;
+    margin: 40px auto;
+    padding: 25px 30px;
+    border-radius: 12px;
+    box-shadow: 0 3px 15px rgba(0,0,0,0.1);
+    color: #333;
+  }
+  h1 {
+    color: #f8b400;
+    text-align: center;
+    margin-bottom: 35px;
+  }
+  .profile-group {
+    margin-bottom: 20px;
+  }
+  label {
+    display: block;
+    font-weight: 600;
+    color: #555;
+    margin-bottom: 6px;
+  }
+  span, input {
+    font-size: 1.05em;
+  }
+  input[type="text"], input[type="email"], input[type="password"], input[type="tel"] {
+    width: 100%;
+    padding: 8px 10px;
+    border-radius: 7px;
+    border: 1.5px solid #ddd;
+    background: #fafafa;
+    transition: border-color 0.3s ease;
+  }
+  input[readonly] {
+    background: #fefefe;
+    color: #666;
+    cursor: not-allowed;
+  }
+  input:focus:not([readonly]) {
+    outline: none;
+    border-color: #f8b400;
+    background: #fff;
+  }
+  .password-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+  }
+  .password-wrapper input {
+    flex: 1;
+  }
+  .toggle-password-btn {
+    background: #f8b400;
+    border: none;
+    color: black;
+    font-weight: 700;
+    padding: 8px 14px;
+    border-radius: 7px;
+    margin-left: 8px;
+    cursor: pointer;
+    user-select: none;
+    transition: background-color 0.3s ease;
+  }
+  .toggle-password-btn:hover {
+    background-color: #ffca28;
+  }
+
+  /* Creative buttons container */
+  .btn-group {
+    margin-top: 35px;
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+  }
+  .creative-btn {
+    flex: 1;
+    background: linear-gradient(45deg, #f8b400, #ffca28);
+    border-radius: 12px;
+    box-shadow: 0 6px 12px rgba(248, 180, 0, 0.4);
+    border: none;
+    cursor: pointer;
+    font-weight: 700;
+    font-size: 1.15em;
+    color: black;
+    padding: 14px 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    transition: all 0.3s ease;
+    text-shadow: 0 1px 1px rgba(255,255,255,0.6);
+  }
+  .creative-btn:hover {
+    background: linear-gradient(45deg, #ffca28, #f8b400);
+    box-shadow: 0 8px 18px rgba(255, 202, 40, 0.6);
+    transform: translateY(-3px);
+  }
+
+  /* Icon styling */
+  .creative-btn svg {
+    width: 24px;
+    height: 24px;
+    fill: black;
+  }
+
+  /* Logout button style */
+  .logout-btn {
+    margin-top: 30px;
+    width: 100%;
+    background-color: #f44336;
+    color: white;
+    font-weight: 700;
+    padding: 14px 0;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  .logout-btn:hover {
+    background-color: #d32f2f;
+  }
+
+</style>
+</head>
+<body>
+
+<h1>My Profile</h1>
+
+<div class="profile-group">
+  <label>Full Name</label>
+  <span id="nameDisplay">Loading...</span>
+</div>
+
+<div class="profile-group">
+  <label>Phone Number</label>
+  <input type="tel" id="phoneInput" placeholder="Enter phone number" />
+</div>
+
+<div class="profile-group">
+  <label>Email</label>
+  <input type="email" id="emailInput" readonly />
+</div>
+
+<div class="profile-group">
+  <label>Password</label>
+  <div class="password-wrapper">
+    <input type="password" id="passwordInput" placeholder="Enter new password" />
+    <button type="button" class="toggle-password-btn" onclick="togglePassword()">Show</button>
+  </div>
+</div>
+
+<div class="btn-group">
+  <button class="creative-btn" onclick="goToOrders()" aria-label="My Orders">
+    <!-- Shopping bag icon -->
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4H6zm0 2h12l1.5 2H4.5L6 4zm2 3a2 2 0 0 1 4 0v2H8V7zm-2 6h8v2H6v-2z"/></svg>
+    My Orders
+  </button>
+  <button class="creative-btn" onclick="goToFavorites()" aria-label="Favorites">
+    <!-- Heart icon -->
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 21s-1-.45-2.28-1.74C6.66 16.77 4 14.26 4 11.5 4 9.01 6.01 7 8.5 7c1.54 0 3.04.99 3.57 2.36h.87C13.46 7.99 14.96 7 16.5 7 19 7 21 9.01 21 11.5c0 2.76-2.66 5.27-5.72 7.76C13 20.55 12 21 12 21z"/></svg>
+    Favorites
+  </button>
+</div>
+
+<button class="logout-btn" onclick="logout()">Logout</button>
+
+<script>
+  const user = JSON.parse(localStorage.getItem('user'));
+
+  if (!user) {
+    window.location.href = 'login.html';
+  } else {
+    document.getElementById('nameDisplay').textContent = user.name || 'Not Provided';
+    document.getElementById('phoneInput').value = user.phone || '';
+    document.getElementById('emailInput').value = user.email;
+    document.getElementById('passwordInput').value = user.password || '';
+  }
+
+  function togglePassword() {
+    const pwdInput = document.getElementById('passwordInput');
+    const btn = document.querySelector('.toggle-password-btn');
+    if (pwdInput.type === 'password') {
+      pwdInput.type = 'text';
+      btn.textContent = 'Hide';
+    } else {
+      pwdInput.type = 'password';
+      btn.textContent = 'Show';
+    }
+  }
+
+  document.getElementById('phoneInput').addEventListener('change', () => {
+    user.phone = document.getElementById('phoneInput').value.trim();
+    localStorage.setItem('user', JSON.stringify(user));
+  });
+
+  document.getElementById('passwordInput').addEventListener('change', () => {
+    user.password = document.getElementById('passwordInput').value;
+    localStorage.setItem('user', JSON.stringify(user));
+  });
+
+  function goToOrders() {
+    window.location.href = 'order-history.html';
+  }
+  function goToFavorites() {
+    window.location.href = 'favorites.html';
+  }
+  function logout() {
+    localStorage.removeItem('user');
+    window.location.href = 'login.html';
+  }
+</script>
+
+</body>
+</html>

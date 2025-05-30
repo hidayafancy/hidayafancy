@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Order History - Hidaya Fancy</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #fff7e6;
+      padding: 20px;
+      max-width: 800px;
+      margin: auto;
+    }
+    h1 {
+      text-align: center;
+      color: #f8b400;
+    }
+    .order-card {
+      background: white;
+      border: 1px solid #ddd;
+      padding: 15px;
+      border-radius: 8px;
+      margin-bottom: 30px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+      position: relative;
+    }
+    .order-card.cancelled {
+      border-color: red;
+      background-color: #ffe6e6;
+    }
+    .order-card.returned {
+      border-color: blue;
+      background-color: #e6f0ff;
+    }
+    .cancel-reason {
+      color: red;
+      font-style: italic;
+      margin-top: 10px;
+    }
+    .return-reason {
+      color: blue;
+      font-style: italic;
+      margin-top: 10px;
+    }
+    .highlight {
+      font-weight: bold;
+      color: #f8b400;
+    }
+    iframe {
+      margin-top: 15px;
+      width: 100%;
+      height: 300px;
+      border: none;
+      border-radius: 8px;
+    }
+    .action-btn {
+      padding: 8px 16px;
+      margin-top: 10px;
+      margin-right: 8px;
+      border: none;
+      border-radius: 5px;
+      color: white;
+      cursor: pointer;
+    }
+    .cancel-btn {
+      background-color: #f44336;
+    }
+    .return-btn {
+      background-color: #2196F3;
+    }
+    .action-btn:disabled {
+      background-color: #ccc;
+      cursor: not-allowed;
+    }
+  </style>
+</head>
+<body>
+
+<h1>Your Order History</h1>
+<div id="history"></div>
+
+<script>
+  function getGoogleMapEmbedUrl(address) {
+    const base = "https://www.google.com/maps/embed/v1/place";
+    const apiKey = "YOUR_GOOGLE_MAPS_API_KEY"; // Replace with your actual API key
+    const query = encodeURIComponent(address);
+    return `${base}?key=${apiKey}&q=${query}`;
+  }
+
+  function cancelOrder(index) {
+    const reason = prompt("Please enter the reason for cancelling this order:");
+    if (reason) {
+      const orders = JSON.parse(localStorage.getItem("orderHistory")) || [];
+      orders[index].cancelled = true;
+      orders[index].cancelReason = reason;
+      localStorage.setItem("orderHistory", JSON.stringify(orders));
+      renderOrders();
+    }
+  }
+
+  function returnOrder(index) {
+    const reason = prompt("Please enter the reason for returning this product:");
+    if (reason) {
+      const orders = JSON.parse(localStorage.getItem("orderHistory")) || [];
+      orders[index].returned = true;
+      orders[index].returnReason = reason;
+      localStorage.setItem("orderHistory", JSON.stringify(orders));
+      renderOrders();
+    }
+  }
+
+  function renderOrders() {
+    const orders = JSON.parse(localStorage.getItem("orderHistory")) || [];
+    const historyDiv = document.getElementById("history");
+    historyDiv.innerHTML = '';
+
+    if (orders.length === 0) {
+      historyDiv.innerHTML = "<p>No past orders found.</p>";
+      return;
+    }
+
+    orders.forEach((order, index) => {
+      const div = document.createElement("div");
+      div.className = "order-card";
+
+      if (order.cancelled) div.classList.add("cancelled");
+      if (order.returned) div.classList.add("returned");
+
+      let productsHTML = '';
+      if (order.products && Array.isArray(order.products)) {
+        order.products.forEach(p => {
+          productsHTML += `
+            <p><span class="highlight">Product:</span> ${p.name} (${p.brand || 'N/A'})</p>
+            <p><span class="highlight">Quantity:</span> ${p.quantity || p.qty}</p>
+            <p><span class="highlight">Price per item:</span> Rs ${p.price}</p>
+            <p><span class="highlight">Total:</span> Rs ${p.price * (p.quantity || p.qty)}</p>
+            <hr/>
+          `;
+        });
+      } else {
+        productsHTML = `<p><span class="highlight">Product:</span> ${order.name} (${order.brand})</p>
+                        <p><span class="highlight">Quantity:</span> ${order.quantity}</p>
+                        <p><span class="highlight">Price per item:</span> Rs ${order.price}</p>
+                        <p><span class="highlight">Total:</span> Rs ${order.price * order.quantity}</p>`;
+      }
+
+      div.innerHTML = `
+        <h3>Order #${index + 1}</h3>
+        ${productsHTML}
+        <p><span class="highlight">Customer:</span> ${order.customer.name}</p>
+        <p><span class="highlight">Email:</span> ${order.customer.email}</p>
+        <p><span class="highlight">Phone:</span> ${order.customer.phone}</p>
+        <p><span class="highlight">Address:</span> ${order.customer.address}</p>
+        <p><span class="highlight">Order Date:</span> ${order.date}</p>
+        <iframe
+          src="${getGoogleMapEmbedUrl(order.customer.address)}"
+          allowfullscreen
+          loading="lazy"
+          referrerpolicy="no-referrer-when-downgrade">
+        </iframe>
+      `;
+
+      // Show reason if cancelled or returned
+      if (order.cancelled) {
+        div.innerHTML += `<p class="cancel-reason">Cancelled: ${order.cancelReason}</p>`;
+      } else if (order.returned) {
+        div.innerHTML += `<p class="return-reason">Returned: ${order.returnReason}</p>`;
+      } else {
+        div.innerHTML += `
+          <button class="action-btn cancel-btn" onclick="cancelOrder(${index})">Cancel Order</button>
+          <button class="action-btn return-btn" onclick="returnOrder(${index})">Return Product</button>
+        `;
+      }
+
+      historyDiv.appendChild(div);
+    });
+  }
+
+  renderOrders();
+</script>
+
+</body>
+</html>
